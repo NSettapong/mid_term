@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Mid Exam</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <style>
+            .all{
+                width: 500px;
+                height: 1100px;
+                margin: 0 auto;
+                border: 1px solid black;
+                text-align: center;
+                background: gray;
+                padding: 20px;
+
+                
+            }
+        .bt1{
+            padding: 20px 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 0px;
+            background: transparent;
+            position: relative;
+            margin: 20px;
+            transition: all 0.25s ease;
+        }
+        .bt1{
+            background: black;
+            color: #fff;
+            border-radius: 30px;
+            transition: all 0.25s ease;
+        }
+        .bt1:hover{
+            transform: translate(-12px,-12px);
+        }
+        .bt1:hover:before{
+            transform: translate(12px,12px);
+        }
+        .bt1::after,.submit::before{
+            content: "";
+            position: absolute;
+            opacity: 0.3;
+            border-radius: inherit;
+            background: #000;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            bottom: 0;
+            z-index: -1;
+            transition: all 0.5s ease;
+        }
+        .bt2{
+            padding: 20px 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 0px;
+            background: transparent;
+            position: relative;
+            margin: 20px;
+            transition: all 0.25s ease;
+        }
+        .bt2{
+            background: black;
+            color: #fff;
+            border-radius: 30px;
+            transition: all 0.25s ease;
+        }
+        .bt2:hover{
+            transform: translate(-12px,-12px);
+        }
+        .bt2:hover:before{
+            transform: translate(12px,12px);
+        }
+        .bt2::after,.submit::before{
+            content: "";
+            position: absolute;
+            opacity: 0.3;
+            border-radius: inherit;
+            background: #000;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            bottom: 0;
+            z-index: -1;
+            transition: all 0.5s ease;
+        }
+        
+            body{
+                background-color: salmon;
+                width: max-content;
+                height: max-content;
+                padding: 20px;
+                margin: 20px;
+                text-align: center;
+            }
+
+        </style>
+    </head>
+   
+    <script>
+        
+        document.addEventListener('DOMContentLoaded',function (){
+                let postDatasubmit =document.querySelector('#post');
+                postDatasubmit.addEventListener('click',postData);
+                
+            function postData(){
+                // const st_id = document.querySelector('#st_id').value;
+                // const st_name = document.querySelector('#st_name').value;
+                // const sensor_name = document.querySelector('#sensor_name').value;
+                // const sensortype = document.querySelector('#sensor_type').value;
+                // const sensor_unit = document.querySelector('#sensor_unit').value;
+                // const st_val = document.querySelector('#sen_value').value;
+                // alert(document.querySelector('#sensors_value').value)
+                
+                fetch('https://midterm-exam-010723313-2022.herokuapp.com/student_post',{
+                method:'post',
+                headers: {'content-Type':'application/json'
+               },
+               body : JSON.stringify({
+                    st_id : document.querySelector('#st_id').value,
+                    st_name : document.querySelector('#st_name').value,
+                    sensor_name :document.querySelector('#sensor_name').value,
+                    sensor_type :document.querySelector('#sensor_type').value,
+                    sensor_unit :document.querySelector('#sensor_unit').value,
+                    sensor_value :document.querySelector('#sensor_val').value
+                    // sensor_value :"2112"
+                    // sensor_value :st_val.value
+                    // sensor_value :st_val.value,
+                    // st_id : "111",
+                    // st_name : "11",
+                    // sensor_name :"111",
+                    // sensor_type : "1111",
+                    // sensor_unit : "1111",
+                    // sensor_value :"1111"
+               })
+               })
+               .then(response => console.log(response))
+               .catch(err => console.log(err))
+             }
+            document.getElementById('get').onsubmit = function (){
+                const sensor_type = document.querySelector('#sensor').value;
+                
+                fetch(sensor_type)
+                .then(response => response.json())
+                .then(flow => {
+                        const currency = document.querySelector('#currency').value;
+                        console.log(flow)
+                        const check = flow[currency] ;
+                        console.log(check)
+                    if(check !== undefined){
+                        
+                        const name = flow[currency].name;
+                        const type = flow[currency].type;
+                        const unit = flow[currency].unit;
+                        const value = flow[currency].value;
+                        const plant = flow[currency]["plant-site"];
+                        document.querySelector('name').innerHTML = `sensor name: ${name}  `;
+                        document.querySelector('type').innerHTML = `sensor type: ${type}  `;
+                        document.querySelector('unit').innerHTML = `sensor unit: ${unit}  `;
+                        document.querySelector('plant').innerHTML = `plant-site: ${plant}  `;
+                        document.querySelector('value').innerHTML = `sensor value: ${value}  `;
+                        console.log(name)
+                        console.log(flow.name)
+                     
+                    }
+                    else{
+                        document.querySelector('name').innerHTML = "Invalid data.";
+                        document.querySelector('type').innerHTML = `  `;
+                        document.querySelector('unit').innerHTML = `  `;
+                        document.querySelector('plant').innerHTML = `  `;
+                        document.querySelector('value').innerHTML = `  `;
+                    }
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
+                return false;
+            }
+            
+        });
+        
+    </script>
+    <body>
+        <h1>
+            Mid Test
+        </h1>
+       <div class="all">
+        <div class="select">
+        <select name="sensor" id="sensor">
+            <option select disabled>Choose a type</option>
+            <option value='https://midterm-exam-010723313-2022.herokuapp.com/device?sensor_type=level-transducer'>level-transduser</option>
+            <option value="https://midterm-exam-010723313-2022.herokuapp.com/device?sensor_type=flow-transducer">flow-transduser</option>
+            <option value="https://midterm-exam-010723313-2022.herokuapp.com/device?sensor_type=pressure-transducer">pressure-transducer</option>
+            <option value="https://midterm-exam-010723313-2022.herokuapp.com/device?sensor_type=temperature-transducer">temp-transducer</option>
+        </select>
+    </div>
+    <div class="choose">
+        <form id="get" >
+            <input id="currency" placeholder="id" type="number">
+            <input class="bt1" type = "submit" value="Convert">
+        </form>
+    </div>
+        <div id = "result">
+
+        </div>
+        <br>   
+        <name>
+        </name>
+        <br>  
+        <type></type>
+        <br>  
+        <unit></unit>
+        <br>
+        <plant></plant>
+        <br>    
+        <value></value>
+        <br> 
+        <div>
+        <!-- <form fetch="https://midterm-exam-010723313-2022.herokuapp.com/student_post" method='post' id="post">  -->
+            <!-- <form id="post"> -->
+            <label for="id" class="form-label">ID:</label>
+            <input id="st_id" placeholder="id" type="number"class="form-control"><br><br>
+            <label for="st-name "class="form-label">Student name:</label>
+            <input id="st_name" placeholder="Student-name" type="text"class="form-control"><br><br>
+            <label for="sensor-name "class="form-label">Sensor name:</label>
+            <input id="sensor_name" placeholder="sensor-name" type="text"class="form-control"><br><br>
+            <label for="sensor-type "class="form-label">Sensor type:</label>
+            <input id="sensor_type" placeholder="sensor-type" type="text"class="form-control"><br><br>
+            <label for="sensor-unit "class="form-label">Sensor unit:</label>
+            <input id="sensor_unit" placeholder="sensor-unit" type="text"class="form-control"><br><br>
+            <label for="sensor-val "class="form-label">Sensor value:</label>
+            <input id="sensor_val" placeholder="sensor-unit" type="text"class="form-control"><br><br>
+            <input class="bt2" id ="post" type="submit" value="Convert">
+            <!-- <button id ="post">postdata</button> -->
+        </div>
+          </form>
+        </div> 
+    </body>
+</html>
